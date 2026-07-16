@@ -107,8 +107,8 @@ EmployeeName	DepartmentName
 John	         HR
 Emma	         Finance
 David        	 IT
-Sophia	       IT
-Michael	       Sales
+Sophia	         IT
+Michael	         Sales
 James	         Marketing
 Isabella	     Sales
 
@@ -121,11 +121,11 @@ on pro.DepartmentId=dept.DepartmentID;
 --output--
 ProjectName	       DepartmentName
 Payroll System	     HR
-Audit System	       Finance
-Website Redesign	   Marketing
-ERP Upgrade         	IT
+Audit System	     Finance
+Website Redesign	 Marketing
+ERP Upgrade          IT
 Sales Dashboard	     Sales
-Automation	        Operations
+Automation	         Operations
 
 ------" Show employees along with project names. "------
 
@@ -137,12 +137,12 @@ on emp.DepartmentId=pro.DepartmentID;
 --output--
 EmployeeID	EmployeeName	DepartmentID	Salary	ManagerID	 JoiningDate	  ProjectName
 101	          John	          1	        50000		           2020-01-15	   Payroll System
-102         	Emma	          2	        65000	    101	     2021-03-10	   Audit System
-103         	David	          3	        70000	    101	     2019-07-22	   ERP Upgrade
+102           Emma	          2	        65000	    101	     2021-03-10	   Audit System
+103           David	          3	        70000	    101	     2019-07-22	   ERP Upgrade
 104	         Sophia	          3	        72000	    103	     2022-05-01	   ERP Upgrade
-105          Michael	        5	        55000	    102	     2021-09-18	   Sales Dashboard
+105          Michael	      5	        55000	    102	     2021-09-18	   Sales Dashboard
 107	         James	          4	        60000	    103	     2022-10-20    Website Redesign
-110	        Isabella	        5	        68000	    105	     2021-06-05	   Sales Dashboard
+110	        Isabella	      5	        68000	    105	     2021-06-05	   Sales Dashboard
 
 ------" Show employee salary and department location. "------
 
@@ -169,13 +169,13 @@ on emp.DepartmentId=pro.DepartmentID;
 
 --output--
 EmployeeID	EmployeeName	DepartmentID	Salary	ManagerID	 JoiningDate	  ProjectName
-101	          John	          1	        50000		           2020-01-15	   Payroll System
-102         	Emma	          2	        65000	    101	     2021-03-10	   Audit System
-103         	David	          3	        70000	    101	     2019-07-22	   ERP Upgrade
-104	         Sophia	          3	        72000	    103	     2022-05-01	   ERP Upgrade
-105          Michael	        5	        55000	    102	     2021-09-18	   Sales Dashboard
-107	         James	          4	        60000	    103	     2022-10-20    Website Redesign
-110	        Isabella	        5	        68000	    105	     2021-06-05	   Sales Dashboard
+101	          John	          1	            50000		         2020-01-15	   Payroll System
+102           Emma	          2	            65000	    101	     2021-03-10	   Audit System
+103           David	          3	            70000	    101	     2019-07-22	   ERP Upgrade
+104	         Sophia	          3	            72000	    103	     2022-05-01	   ERP Upgrade
+105          Michael	      5	            55000	    102	     2021-09-18	   Sales Dashboard
+107	         James	          4	            60000	    103	     2022-10-20    Website Redesign
+110	        Isabella	      5	            68000	    105	     2021-06-05	   Sales Dashboard
 
 LEFT JOIN
 ===========
@@ -189,14 +189,84 @@ on emp.DepartmentId=dept.DepartmentID;
 
 --output--
 EmployeeID	EmployeeName	DepartmentID	Salary	 ManagerID	  JoiningDate
-101	          John	         1	         50000		            2020-01-15
-102         	Emma	         2	         65000	   101	      2021-03-10
-103	          David	         3	         70000	   101	      2019-07-22
-104	          Sophia	       3	         72000	   103	      2022-05-01
-105	          Michael	       5	         55000	   102	      2021-09-18
-106	          Olivia		                 48000	   102	      2023-01-12
-107	          James	         4	         60000	   103	      2022-10-20
-108	          William	       7	         75000	   101	      2020-08-11
-109	           Ava		                   52000		            2024-02-15
-110	         Isabella	       5	         68000	   105	      2021-06-05
+101	          John	         1	           50000		          2020-01-15
+102           Emma	         2	           65000	   101	      2021-03-10
+103	          David	         3	           70000	   101	      2019-07-22
+104	          Sophia	     3	           72000	   103	      2022-05-01
+105	          Michael	     5	           55000	   102	      2021-09-18
+106	          Olivia		               48000	   102	      2023-01-12
+107	          James	         4	           60000	   103	      2022-10-20
+108	          William	     7	           75000	   101	      2020-08-11
+109	           Ava		                   52000		          2024-02-15
+110	         Isabella	       5	       68000	   105	      2021-06-05
 
+------" Show all departments even if no employee works there. "------
+
+select dept.DepartmentID,dept.DepartmentName,dept.Location,emp.employeeName,emp.employeeID from Departments as dept
+Left join employees as emp
+on dept.DepartmentId=emp.DepartmentID;
+
+--output--
+DepartmentID	DepartmentName	  Location	 EmployeeName	EmployeeID
+1	               HR	          New York	      John	       101
+2	              Finance	      Chicago	      Emma	       102
+3	               IT	          Dallas	     David	       103
+3	               IT	          Dallas	     Sophia	       104
+4	             Marketing	      Boston	     James	       107
+5	              Sales	          Seattle	    Michael	       105
+5	              Sales	          Seattle	    Isabella	   110
+6	            Operations	      Atlanta		
+
+------" Show all projects and their department names. "------
+
+select  pro.projectID,pro.ProjectName,dept.DepartmentName from Projects as pro
+Left join Departments as dept
+on pro.DepartmentId=dept.DepartmentID;
+
+--output--
+ProjectID	ProjectName     	DepartmentName
+201	        Payroll System	        HR
+202     	Audit System	      Finance
+203	        Website Redesign	 Marketing
+204	        ERP Upgrade	            IT
+205	        Sales Dashboard	       Sales
+206	        Automation	         Operations
+207	        AI Chatbot	
+
+------" Show every employee and their assigned projects. "------
+
+select  emp.employeeID,emp.employeeName,pro.projectname from employees as emp
+Left join projects as pro
+on emp.DepartmentId=pro.DepartmentID;
+
+--output--
+EmployeeID	EmployeeName	ProjectName
+101	          John	       Payroll System
+102	          Emma	       Audit System
+103	          David	       ERP Upgrade
+104	          Sophia	   ERP Upgrade
+105	          Michael	   Sales Dashboard
+106           Olivia	
+107	          James	       Website Redesign
+108	         William	
+109           Ava	
+110	        Isabella	   Sales Dashboard
+
+------" Display all employees even if they are not assigned to any project. "------
+
+select  emp.employeeID,emp.employeeName,pro.projectname from employees as emp
+Left join projects as pro
+on emp.DepartmentId=pro.DepartmentID;
+
+--output--
+EmployeeID	EmployeeName	ProjectName
+101	          John	       Payroll System
+102	          Emma	       Audit System
+103	          David	       ERP Upgrade
+104	          Sophia	   ERP Upgrade
+105	          Michael	   Sales Dashboard
+106           Olivia	
+107	          James	       Website Redesign
+108	         William	
+109           Ava	
+110	        Isabella	   Sales Dashboard
